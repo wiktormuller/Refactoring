@@ -1,7 +1,8 @@
 using System;
 
 namespace Refactoring.Web.DomainModels {
-    public class Order {
+    public class Order
+    {
         public string Id { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime UpdatedOn { get; set; }

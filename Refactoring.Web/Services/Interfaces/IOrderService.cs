@@ -5,7 +5,6 @@ namespace Refactoring.Web.Services.Interfaces
 {
     public interface IOrderService
     {
-        Task ProcessTask();
-        Order GetOrder();
+        Task<Order> ProcessOrder(Order order);
     }
 }

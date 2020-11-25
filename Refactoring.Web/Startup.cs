@@ -30,7 +30,9 @@ namespace Refactoring.Web
             services.AddTransient<IChamberOfCommerceAPI, ChamberOfCommerceApi>();
             services.AddTransient<IDistrictOrderFactory, DistrictOrderFactory>();
             services.AddTransient<IAdvertPrinter, AdvertPrinter>();
+
             services.AddTransient<IDateTimeResolver, DateTimeResolver>();
+            services.AddTransient<IRandomHelper, RandomHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

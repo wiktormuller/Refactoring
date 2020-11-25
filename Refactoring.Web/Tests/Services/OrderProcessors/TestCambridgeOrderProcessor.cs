@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Refactoring.Web.Tests.OrderProcessors
+namespace Refactoring.Web.Tests.Services.OrderProcessors
 {
     public class TestCambridgeOrderProcessor
     {

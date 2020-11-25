@@ -18,7 +18,7 @@ namespace Refactoring.Web.Services
             _config = config;
         }
 
-        public  async Task<DataResult> GetFor(string district) {
+        public  async Task<DataResult> GetImageAndThumbnailDataFor(string district) {
             using var client = new HttpClient();
 
             var absoulteUrl = BuildUrlForDistrict(district);

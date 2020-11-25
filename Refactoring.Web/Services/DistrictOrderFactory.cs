@@ -10,19 +10,21 @@ namespace Refactoring.Web.Services
         private readonly IChamberOfCommerceAPI _chamberOfCommerceApi;
         private readonly IAdvertPrinter _advertPrinter;
         private readonly IDealService _dealService;
+        private readonly IDateTimeResolver _dateTimeResolver;
 
-        public DistrictOrderFactory(IChamberOfCommerceAPI chamberOfCommerceApi, IAdvertPrinter advertPrinter, IDealService dealService)
+        public DistrictOrderFactory(IChamberOfCommerceAPI chamberOfCommerceApi, IAdvertPrinter advertPrinter, IDealService dealService, IDateTimeResolver dateTimeResolver)
         {
             _chamberOfCommerceApi = chamberOfCommerceApi;
             _advertPrinter = advertPrinter;
             _dealService = dealService;
+            _dateTimeResolver = dateTimeResolver;
         }
 
         public OrderProcessor For(string district)
         {
             if (district.ToLower() == DistrictHelper.Cambridge)
             {
-                return new CambridgeOrderProcessor(_chamberOfCommerceApi, _advertPrinter);
+                return new CambridgeOrderProcessor(_chamberOfCommerceApi, _advertPrinter, _dateTimeResolver);
             }
 
             if (district.ToLower() == DistrictHelper.Middleton)

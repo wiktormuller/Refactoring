@@ -11,11 +11,13 @@ namespace Refactoring.Web.Services.OrderProcessors
     {
         private readonly IChamberOfCommerceAPI _chamberOfCommerceApi;
         private readonly IAdvertPrinter _advertPrinter;
+        private readonly IDateTimeResolver _dateResolver;
 
-        public CambridgeOrderProcessor(IChamberOfCommerceAPI chamberOfCommerceApi, IAdvertPrinter advertPrinter)
+        public CambridgeOrderProcessor(IChamberOfCommerceAPI chamberOfCommerceApi, IAdvertPrinter advertPrinter, IDateTimeResolver dateResolver)
         {
             _chamberOfCommerceApi = chamberOfCommerceApi;
             _advertPrinter = advertPrinter;
+            _dateResolver = dateResolver;
         }
 
         public override async Task<Order> PrintAdvertAndUpdateOrder(Order order)
@@ -27,9 +29,9 @@ namespace Refactoring.Web.Services.OrderProcessors
                 Content = "Custom Birthday and Wedding Cakes"
             };
 
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Tuesday)
+            if (_dateResolver.IsItTuesday())
             {
-                var result = await _chamberOfCommerceApi.GetFor("Middleton");
+                var result = await _chamberOfCommerceApi.GetImageAndThumbnailDataFor("Middleton");
                 advert.ImageUrl = result.ThumbnailUrl;
             }
 

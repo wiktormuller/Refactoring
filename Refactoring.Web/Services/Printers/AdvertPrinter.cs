@@ -1,9 +1,10 @@
 ﻿using Refactoring.Web.DomainModels;
+using Refactoring.Web.Services.Interfaces;
 using System;
 
 namespace Refactoring.Web.Services.Printers
 {
-    public class AdvertPrinter
+    public class AdvertPrinter : IAdvertPrinter
     {
         public void Print(Advert advert, bool IsDefaultAdvert)
         {

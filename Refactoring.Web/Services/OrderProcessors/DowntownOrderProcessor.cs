@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Refactoring.Web.Services.OrderProcessors
 {
-    public class DowntownOrderProcessor
+    public class DowntownOrderProcessor : OrderProcessor
     {
         private readonly IAdvertPrinter _advertPrinter;
 
@@ -16,7 +16,7 @@ namespace Refactoring.Web.Services.OrderProcessors
             _advertPrinter = advertPrinter;
         }
 
-        public async Task<Order> PrintAdvertAndUpdateOrder(Order order)
+        public override async Task<Order> PrintAdvertAndUpdateOrder(Order order)
         {
             if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
             {

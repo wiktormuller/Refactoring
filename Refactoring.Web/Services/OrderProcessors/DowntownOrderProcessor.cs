@@ -10,17 +10,19 @@ namespace Refactoring.Web.Services.OrderProcessors
     public class DowntownOrderProcessor : OrderProcessor
     {
         private readonly IAdvertPrinter _advertPrinter;
+        private readonly IDateTimeResolver _dateTimeResolver;
 
-        public DowntownOrderProcessor(IAdvertPrinter advertPrinter)
+        public DowntownOrderProcessor(IAdvertPrinter advertPrinter, IDateTimeResolver dateTimeResolver)
         {
             _advertPrinter = advertPrinter;
+            _dateTimeResolver = dateTimeResolver;
         }
 
         public override async Task<Order> PrintAdvertAndUpdateOrder(Order order)
         {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
+            if (_dateTimeResolver.IsItTheWeekend())
             {
-                _advertPrinter.Print(null, true);
+                _advertPrinter.PrintDefault(null);
             }
             var advert = new Advert()
             {
@@ -30,7 +32,7 @@ namespace Refactoring.Web.Services.OrderProcessors
             };
             
             order.Advert = advert;
-            _advertPrinter.Print(advert, false);
+            _advertPrinter.PrintCustom(advert);
             order.Status = "Complete";
 
             return order;

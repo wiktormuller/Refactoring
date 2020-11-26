@@ -11,13 +11,15 @@ namespace Refactoring.Web.Services
         private readonly IAdvertPrinter _advertPrinter;
         private readonly IDealService _dealService;
         private readonly IDateTimeResolver _dateTimeResolver;
+        private readonly IRandomHelper _randomHelper;
 
-        public DistrictOrderFactory(IChamberOfCommerceAPI chamberOfCommerceApi, IAdvertPrinter advertPrinter, IDealService dealService, IDateTimeResolver dateTimeResolver)
+        public DistrictOrderFactory(IChamberOfCommerceAPI chamberOfCommerceApi, IAdvertPrinter advertPrinter, IDealService dealService, IDateTimeResolver dateTimeResolver, IRandomHelper randomHelper)
         {
             _chamberOfCommerceApi = chamberOfCommerceApi;
             _advertPrinter = advertPrinter;
             _dealService = dealService;
             _dateTimeResolver = dateTimeResolver;
+            _randomHelper = randomHelper;
         }
 
         public OrderProcessor For(string district)
@@ -29,7 +31,7 @@ namespace Refactoring.Web.Services
 
             if (district.ToLower() == DistrictHelper.Middleton)
             {
-                return new MiddletonOrderProcessor(_advertPrinter, _dealService, _chamberOfCommerceApi);
+                return new MiddletonOrderProcessor(_advertPrinter, _dealService, _chamberOfCommerceApi, _randomHelper);
             }
             
             if (district.ToLower() == DistrictHelper.County)
@@ -39,7 +41,7 @@ namespace Refactoring.Web.Services
             
             if (district.ToLower() == DistrictHelper.Downtown)
             {
-                return new DowntownOrderProcessor(_advertPrinter);
+                return new DowntownOrderProcessor(_advertPrinter, _dateTimeResolver);
             }
 
             throw new NotImplementedException($"No Processor for {district}");

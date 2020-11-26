@@ -1,4 +1,5 @@
 ﻿using Refactoring.Web.DomainModels;
+using Refactoring.Web.Services.Helpers;
 using Refactoring.Web.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,19 +13,21 @@ namespace Refactoring.Web.Services.OrderProcessors
         private readonly IAdvertPrinter _advertPrinter;
         private readonly IDealService _dealService;
         private readonly IChamberOfCommerceAPI _chamberOfCommerceApi;
+        private readonly IRandomHelper _randomHelper;
 
-        public MiddletonOrderProcessor(IAdvertPrinter advertPrinter, IDealService dealService, IChamberOfCommerceAPI chamberOfCommerceApi)
+        public MiddletonOrderProcessor(IAdvertPrinter advertPrinter, IDealService dealService, IChamberOfCommerceAPI chamberOfCommerceApi, IRandomHelper randomHelper)
         {
             _advertPrinter = advertPrinter;
             _dealService = dealService;
             _chamberOfCommerceApi = chamberOfCommerceApi;
+            _randomHelper = randomHelper;
         }
 
         public override async Task<Order> PrintAdvertAndUpdateOrder(Order order)
         {
             var result = await _chamberOfCommerceApi.GetImageAndThumbnailDataFor("Middleton");
             var deal = _dealService.GenerateDeal(DateTime.Now);
-            var biz = _dealService.GetRandomLocalBusiness();
+            var biz = _randomHelper.GetRandomValue(BusinessHelper.AllBusinesses);
 
             var advert = new Advert()
             {
@@ -36,7 +39,7 @@ namespace Refactoring.Web.Services.OrderProcessors
 
 
             order.Advert = advert;
-            _advertPrinter.Print(advert, false);
+            _advertPrinter.PrintCustom(advert);
             order.Status = "Complete";
 
             return order;
